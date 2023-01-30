@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "119139868803",
+    "project_id": "testtask-15d4c",
+    "storage_bucket": "testtask-15d4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119139868803:android:76b1becc61d49c69be3bb6",
+        "android_client_info": {
+          "package_name": "com.example.testtaskintegrio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119139868803-c3jpkuqa084573g6v558boscscjabper.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJIQCKBWuv06nB8bMvz16sU4OKcbJkPEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119139868803-c3jpkuqa084573g6v558boscscjabper.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
