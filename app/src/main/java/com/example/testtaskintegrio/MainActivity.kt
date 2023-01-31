@@ -13,12 +13,8 @@ import com.example.testtaskintegrio.presenter.theme.TestTaskIntegrioTheme
 import com.example.testtaskintegrio.presenter.ui.MapScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 
 class MainActivity : ComponentActivity() {
-
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +26,6 @@ class MainActivity : ComponentActivity() {
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
             )
-
-            fusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient(this)
 
             TestTaskIntegrioTheme {
                 Surface(

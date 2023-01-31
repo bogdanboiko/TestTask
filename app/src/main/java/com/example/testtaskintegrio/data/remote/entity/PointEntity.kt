@@ -4,8 +4,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.Exclude
 
 data class PointEntity(
-    @Exclude
-    val id: String,
+    @get:Exclude val id: String,
     val address: String,
     val corpus: Int,
     val geoHash: String,
