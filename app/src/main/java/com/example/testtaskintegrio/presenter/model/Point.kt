@@ -1,12 +1,12 @@
 package com.example.testtaskintegrio.presenter.model
 
-import com.firebase.geofire.GeoLocation
+import com.google.firebase.firestore.GeoPoint
 
 data class Point(
     val id: String,
     val address: String,
-    val corpus: Int,
+    val corpus: Long,
     val geoHash: String,
-    val coordinates: GeoLocation,
+    val coordinates: GeoPoint,
     val properties: Map<String, Int>
 )

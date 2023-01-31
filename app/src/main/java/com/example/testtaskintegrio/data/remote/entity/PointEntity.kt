@@ -1,13 +1,13 @@
 package com.example.testtaskintegrio.data.remote.entity
 
-import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.GeoPoint
 
 data class PointEntity(
     @get:Exclude val id: String,
     val address: String,
-    val corpus: Int,
+    val corpus: Long,
     val geoHash: String,
-    val coordinates: GeoLocation,
+    val coordinates: GeoPoint,
     val properties: Map<String, Int>
 )

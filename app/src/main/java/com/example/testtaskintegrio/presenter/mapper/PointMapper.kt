@@ -14,3 +14,15 @@ fun Point.mapPointToDomain() =
             properties = properties
         )
     }
+
+fun PointDomain.mapToPoint() =
+    with(this) {
+        Point(
+            id = id,
+            address = address,
+            corpus = corpus,
+            geoHash = geoHash,
+            coordinates = coordinates,
+            properties = properties
+        )
+    }

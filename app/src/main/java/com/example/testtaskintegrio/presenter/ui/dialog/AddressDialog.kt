@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 @Composable
 fun AddressDialog(
     onDismissRequest: () -> Unit,
-    onSendPrintedLocation: (String, Int) -> Unit,
+    onSendPrintedLocation: (String, Long) -> Unit,
     onFindMyLocation: (LatLng) -> String
 ) {
     Dialog(
@@ -100,9 +100,9 @@ fun AddressDialog(
                         Button(
                             onClick = {
                                 val corpus = if (corpusInput.value.text.isEmpty()) {
-                                    0
+                                    0L
                                 } else {
-                                    corpusInput.value.text.toInt()
+                                    corpusInput.value.text.toLong()
                                 }
 
                                 onSendPrintedLocation(addressInput.value, corpus)

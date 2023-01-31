@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -21,12 +22,14 @@ import com.example.testtaskintegrio.presenter.ui.dialog.AddressDialog
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
 import java.util.*
 
 @Composable
 fun MapComponent(
     changeCameraPosition: (LatLng) -> Unit,
-    putPoint: (Point) -> Unit
+    putPoint: (Point) -> Unit,
+    listState: State<List<Point>>
 ) {
     val geocoder = Geocoder(LocalContext.current, Locale.getDefault())
     val context = LocalContext.current
@@ -50,8 +53,13 @@ fun MapComponent(
                     )
 
                     val coordinates =
-                        GeoLocation(addressList[0].latitude, addressList[0].longitude)
-                    val geoHash = GeoFireUtils.getGeoHashForLocation(coordinates)
+                        GeoPoint(addressList[0].latitude, addressList[0].longitude)
+                    val geoHash = GeoFireUtils.getGeoHashForLocation(
+                        GeoLocation(
+                            coordinates.latitude,
+                            coordinates.longitude
+                        )
+                    )
 
                     putPoint(
                         Point(
@@ -91,4 +99,6 @@ fun MapComponent(
             tint = Color.White
         )
     }
+
+    PointsList(listState)
 }

@@ -5,7 +5,7 @@ import com.example.testtaskintegrio.data.remote.entity.PointEntity
 
 interface PlaceDatasource {
     interface Remote {
-        fun fetchPoints()
+        suspend fun fetchPoints(): List<PointEntity>
         suspend fun putPoint(point: PointEntity)
     }
 }
