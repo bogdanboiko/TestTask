@@ -5,16 +5,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.example.testtaskintegrio.presenter.PlaceViewModel
 import com.example.testtaskintegrio.presenter.theme.TestTaskIntegrioTheme
 import com.example.testtaskintegrio.presenter.ui.MapScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -45,9 +50,16 @@ class MainActivity : ComponentActivity() {
                             pointList = viewModel.pointsFlow
                         )
                     } else {
-                        LaunchedEffect(Unit) {
-                            multiplePermissionState.launchMultiplePermissionRequest()
+                        val scope = rememberCoroutineScope()
+                        Button(onClick = {
+                            scope.launch {
+                                multiplePermissionState.launchMultiplePermissionRequest()
+                            }
+
+                        }) {
+                            Text(text = "accept permissions")
                         }
+
                     }
                 }
             }
