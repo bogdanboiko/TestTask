@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -16,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import com.example.testtaskintegrio.R
 import com.example.testtaskintegrio.presenter.model.Point
 import com.example.testtaskintegrio.presenter.ui.dialog.AddressDialog
@@ -29,7 +29,7 @@ import java.util.*
 fun MapComponent(
     changeCameraPosition: (LatLng) -> Unit,
     putPoint: (Point) -> Unit,
-    listState: State<List<Point>>
+    listState: LazyPagingItems<Point>
 ) {
     val geocoder = Geocoder(LocalContext.current, Locale.getDefault())
     val context = LocalContext.current

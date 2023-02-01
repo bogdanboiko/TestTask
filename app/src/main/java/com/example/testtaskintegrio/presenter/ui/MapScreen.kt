@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.testtaskintegrio.PlaceViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -50,7 +51,7 @@ fun MapScreen(viewModel: PlaceViewModel = getViewModel()) {
             }, putPoint = {
                 viewModel.putPoint(it)
             },
-                listState = viewModel.state.collectAsState()
+                listState = viewModel.pointsFlow.collectAsLazyPagingItems()
             )
         }
     }

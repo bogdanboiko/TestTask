@@ -74,4 +74,6 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:3.4.0"
 
     implementation "com.google.accompanist:accompanist-permissions:0.29.1-alpha"
+
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
 }
