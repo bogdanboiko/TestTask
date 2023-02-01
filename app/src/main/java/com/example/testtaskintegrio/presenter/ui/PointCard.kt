@@ -6,6 +6,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +16,11 @@ import com.example.testtaskintegrio.R
 import com.example.testtaskintegrio.presenter.model.Point
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.model.LatLng
+import kotlin.math.roundToLong
 
 @Composable
-fun PointCard(point: Point) {
+fun PointCard(point: Point, myLocationState: State<LatLng>) {
     Card(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.White) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -38,34 +41,40 @@ fun PointCard(point: Point) {
                 modifier = Modifier.weight(1f)
             )
 
-            val pointTest = GeoLocation(49.4360412, 32.0672931)
-            val geoHashTest = GeoFireUtils.getGeoHashForLocation(pointTest)
+            val myLocation = myLocationState.value
+
+            val pointTest = GeoLocation(myLocation.latitude, myLocation.longitude)
             val distance = GeoFireUtils.getDistanceBetween(
                 pointTest,
                 GeoLocation(point.coordinates.latitude, point.coordinates.longitude)
             )
 
-            Text(text = distance.toString(), color = Color.Black, maxLines = 1, modifier = Modifier.weight(1f))
+            Text(
+                text = "${distance.roundToLong()} m",
+                color = Color.Black,
+                maxLines = 1,
+                modifier = Modifier.weight(1f)
+            )
 
-            ColorBox(5, Color.Green)
+            ColorBox(point.properties["green"], Color.Green)
 
-            ColorBox(5, Color.Red)
+            ColorBox(point.properties["red"], Color.Red)
 
-            ColorBox(5, Color.Blue)
+            ColorBox(point.properties["blue"], Color.Blue)
 
         }
     }
 }
 
 @Composable
-fun ColorBox(quantity: Int, color: Color) {
+fun ColorBox(quantity: Long?, color: Color) {
     Row(
         modifier = Modifier.width(50.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        if (quantity != 0) {
-            Text(text = quantity.toString(), color = Color.Black, maxLines = 1)
+        if (quantity != null && quantity != 0L) {
+            Text(text = "$quantity", color = Color.Black, maxLines = 1)
 
             Canvas(
                 modifier = Modifier

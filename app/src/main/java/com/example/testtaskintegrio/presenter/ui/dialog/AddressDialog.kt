@@ -1,6 +1,7 @@
 package com.example.testtaskintegrio.presenter.ui.dialog
 
 import android.annotation.SuppressLint
+import android.location.Location
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -17,7 +18,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.testtaskintegrio.R
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 
 
 @SuppressLint("MissingPermission")
@@ -25,7 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 fun AddressDialog(
     onDismissRequest: () -> Unit,
     onSendPrintedLocation: (String, Long) -> Unit,
-    onFindMyLocation: (LatLng) -> String
+    findAndUpdateMyLocation: (Location) -> String
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -47,8 +47,7 @@ fun AddressDialog(
                 IconButton(
                     onClick = {
                         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                            addressInput.value =
-                                (onFindMyLocation(LatLng(it.latitude, it.longitude)))
+                            addressInput.value = (findAndUpdateMyLocation(it))
                         }
                     },
                     modifier = Modifier

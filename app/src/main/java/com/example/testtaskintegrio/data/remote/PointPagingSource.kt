@@ -31,7 +31,7 @@ class PointPagingSource(private val queryPointsByGeo: Query) :
                 val corpus = document.get("corpus") as Long
                 val geoHash = document.get("geoHash") as String
                 val coordinates = document.getGeoPoint("coordinates") as GeoPoint
-                val properties = document.get("properties") as Map<String, Int>
+                val properties = document.get("properties") as Map<String, Long>
 
                 pointList.add(
                     PointDomain(

@@ -9,5 +9,5 @@ data class PointEntity(
     val corpus: Long,
     val geoHash: String,
     val coordinates: GeoPoint,
-    val properties: Map<String, Int>
+    val properties: Map<String, Long>
 )

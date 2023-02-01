@@ -1,6 +1,7 @@
 package com.example.testtaskintegrio.presenter.ui
 
 import android.location.Geocoder
+import android.location.Location
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
@@ -8,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -29,7 +31,9 @@ import java.util.*
 fun MapComponent(
     changeCameraPosition: (LatLng) -> Unit,
     putPoint: (Point) -> Unit,
-    listState: LazyPagingItems<Point>
+    listState: LazyPagingItems<Point>,
+    updateMyCurrentLocation: (Location) -> Unit,
+    myLocationState: State<LatLng>
 ) {
     val geocoder = Geocoder(LocalContext.current, Locale.getDefault())
     val context = LocalContext.current
@@ -61,6 +65,12 @@ fun MapComponent(
                         )
                     )
 
+                    val greenProperty = (0..10).random().toLong()
+
+                    val blueProperty = (0..10).random().toLong()
+
+                    val redProperty = (0..10).random().toLong()
+
                     putPoint(
                         Point(
                             id = "",
@@ -68,16 +78,19 @@ fun MapComponent(
                             corpus = corpus,
                             geoHash = geoHash,
                             coordinates = coordinates,
-                            properties = emptyMap()
+                            properties = mapOf(
+                                "green" to greenProperty,
+                                "red" to redProperty,
+                                "blue" to blueProperty
+                            )
                         )
                     )
                 } else {
                     Toast.makeText(context, "No such location", Toast.LENGTH_LONG).show()
                 }
             },
-            onFindMyLocation = {
-                changeCameraPosition(it)
-
+            findAndUpdateMyLocation = {
+                updateMyCurrentLocation(it)
                 val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
                 if (addresses != null && addresses.isNotEmpty()) {
                     addresses[0].getAddressLine(0)
@@ -100,5 +113,5 @@ fun MapComponent(
         )
     }
 
-    PointsList(listState)
+    PointsList(listState, myLocationState)
 }
