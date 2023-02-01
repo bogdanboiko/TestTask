@@ -34,8 +34,14 @@ fun PointCard(point: Point, myLocationState: State<LatLng>) {
                 tint = Color.Black
             )
 
+            val corpus = if (point.corpus == 0L) {
+                ""
+            } else {
+                point.corpus.toString()
+            }
+
             Text(
-                text = point.address,
+                text = "$corpus ${point.address}",
                 color = Color.Black,
                 maxLines = 1,
                 modifier = Modifier.weight(1f)
@@ -56,11 +62,11 @@ fun PointCard(point: Point, myLocationState: State<LatLng>) {
                 modifier = Modifier.weight(1f)
             )
 
-            ColorBox(point.properties["green"], Color.Green)
+            ColorBox(point.properties["green"], Color(50, 168, 102))
 
-            ColorBox(point.properties["red"], Color.Red)
+            ColorBox(point.properties["orange"], Color(224, 200, 76))
 
-            ColorBox(point.properties["blue"], Color.Blue)
+            ColorBox(point.properties["blue"], Color(76, 182, 224))
 
         }
     }

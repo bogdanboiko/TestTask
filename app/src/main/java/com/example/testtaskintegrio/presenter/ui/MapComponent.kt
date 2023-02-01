@@ -69,7 +69,7 @@ fun MapComponent(
 
                     val blueProperty = (0..10).random().toLong()
 
-                    val redProperty = (0..10).random().toLong()
+                    val orangeProperty = (0..10).random().toLong()
 
                     putPoint(
                         Point(
@@ -80,7 +80,7 @@ fun MapComponent(
                             coordinates = coordinates,
                             properties = mapOf(
                                 "green" to greenProperty,
-                                "red" to redProperty,
+                                "orange" to orangeProperty,
                                 "blue" to blueProperty
                             )
                         )
