@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.testtaskintegrio.R
 import com.example.testtaskintegrio.presenter.model.Point
@@ -40,12 +41,14 @@ fun PointCard(point: Point, distance: Double) {
                 text = "$corpus ${point.address}",
                 color = Color.Black,
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
             )
 
             Text(
                 text = "${distance.roundToLong()} m",
                 color = Color.Black,
+                overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 modifier = Modifier.weight(1f)
             )
