@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.example.testtaskintegrio.R
+import com.example.testtaskintegrio.presenter.PlaceViewState
 import com.example.testtaskintegrio.presenter.model.Point
 import com.example.testtaskintegrio.presenter.ui.dialog.AddressDialog
 import com.firebase.geofire.GeoFireUtils
@@ -33,10 +31,10 @@ fun MapComponent(
     putPoint: (Point) -> Unit,
     listState: LazyPagingItems<Point>,
     updateMyCurrentLocation: (Location) -> Unit,
-    myLocationState: State<LatLng>
+    myLocationState: State<PlaceViewState>
 ) {
-    val geocoder = Geocoder(LocalContext.current, Locale.getDefault())
     val context = LocalContext.current
+    val geocoder = Geocoder(context, Locale.getDefault())
 
     val showCustomDialog = remember {
         mutableStateOf(false)
@@ -48,55 +46,55 @@ fun MapComponent(
         },
             onSendPrintedLocation = { location, corpus ->
                 val addressList = geocoder.getFromLocationName(location, 1)
-                if (addressList != null && addressList.isNotEmpty()) {
-                    changeCameraPosition(
-                        LatLng(
-                            addressList[0].latitude,
-                            addressList[0].longitude
-                        )
-                    )
-
-                    val coordinates =
-                        GeoPoint(addressList[0].latitude, addressList[0].longitude)
-                    val geoHash = GeoFireUtils.getGeoHashForLocation(
-                        GeoLocation(
-                            coordinates.latitude,
-                            coordinates.longitude
-                        )
-                    )
-
-                    val greenProperty = (0..10).random().toLong()
-
-                    val blueProperty = (0..10).random().toLong()
-
-                    val orangeProperty = (0..10).random().toLong()
-
-                    putPoint(
-                        Point(
-                            id = "",
-                            address = location,
-                            corpus = corpus,
-                            geoHash = geoHash,
-                            coordinates = coordinates,
-                            properties = mapOf(
-                                "green" to greenProperty,
-                                "orange" to orangeProperty,
-                                "blue" to blueProperty
-                            )
-                        )
-                    )
-                } else {
+                if (addressList.isNullOrEmpty()) {
                     Toast.makeText(context, "No such location", Toast.LENGTH_LONG).show()
+
+                    return@AddressDialog
                 }
+
+                changeCameraPosition(
+                    LatLng(
+                        addressList[0].latitude,
+                        addressList[0].longitude
+                    )
+                )
+
+                val coordinates =
+                    GeoPoint(addressList[0].latitude, addressList[0].longitude)
+                val geoHash = GeoFireUtils.getGeoHashForLocation(
+                    GeoLocation(
+                        coordinates.latitude,
+                        coordinates.longitude
+                    )
+                )
+
+                val greenProperty = (0..10).random().toLong()
+
+                val blueProperty = (0..10).random().toLong()
+
+                val orangeProperty = (0..10).random().toLong()
+
+                putPoint(
+                    Point(
+                        id = "",
+                        address = location,
+                        corpus = corpus,
+                        geoHash = geoHash,
+                        coordinates = coordinates,
+                        properties = mapOf(
+                            "green" to greenProperty,
+                            "orange" to orangeProperty,
+                            "blue" to blueProperty
+                        )
+                    )
+                )
             },
             findAndUpdateMyLocation = {
                 updateMyCurrentLocation(it)
                 val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
-                if (addresses != null && addresses.isNotEmpty()) {
-                    addresses[0].getAddressLine(0)
-                } else {
-                    ""
-                }
+                if (addresses.isNullOrEmpty()) return@AddressDialog ""
+
+                addresses[0].getAddressLine(0)
             })
     }
 

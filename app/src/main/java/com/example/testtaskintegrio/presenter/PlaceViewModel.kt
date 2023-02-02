@@ -13,10 +13,14 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+data class PlaceViewState(
+    val userLocation: LatLng = LatLng(0.0, 0.0),
+)
+
 class PlaceViewModel(private val repository: PlaceRepository) : ViewModel() {
     val pointsFlow = updateFlow()
 
-    private val _myLocation = MutableStateFlow(LatLng(0.0, 0.0))
+    private val _myLocation = MutableStateFlow(PlaceViewState())
     val myLocation = _myLocation.asStateFlow()
 
 
@@ -36,6 +40,6 @@ class PlaceViewModel(private val repository: PlaceRepository) : ViewModel() {
     }
 
     private fun updateMyLocation(location: Location) {
-        _myLocation.tryEmit(LatLng(location.latitude, location.longitude))
+        _myLocation.update { it.copy(userLocation = LatLng(location.latitude, location.longitude)) }
     }
 }

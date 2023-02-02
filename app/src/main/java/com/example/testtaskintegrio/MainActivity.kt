@@ -9,8 +9,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -43,9 +41,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     if (multiplePermissionState.allPermissionsGranted) {
                         MapScreen(
-                            sendEvent = { event ->
-                                viewModel.onEvent(event)
-                            },
+                            sendEvent = viewModel::onEvent,
                             myLocationState = viewModel.myLocation.collectAsState(),
                             pointList = viewModel.pointsFlow
                         )

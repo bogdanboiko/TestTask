@@ -6,21 +6,18 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.testtaskintegrio.R
 import com.example.testtaskintegrio.presenter.model.Point
-import com.firebase.geofire.GeoFireUtils
-import com.firebase.geofire.GeoLocation
-import com.google.android.gms.maps.model.LatLng
 import kotlin.math.roundToLong
 
 @Composable
-fun PointCard(point: Point, myLocationState: State<LatLng>) {
+fun PointCard(point: Point, distance: Double) {
     Card(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.White) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -44,20 +41,14 @@ fun PointCard(point: Point, myLocationState: State<LatLng>) {
                 text = "$corpus ${point.address}",
                 color = Color.Black,
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
-            )
-
-            val myLocation = myLocationState.value
-
-            val pointTest = GeoLocation(myLocation.latitude, myLocation.longitude)
-            val distance = GeoFireUtils.getDistanceBetween(
-                pointTest,
-                GeoLocation(point.coordinates.latitude, point.coordinates.longitude)
             )
 
             Text(
                 text = "${distance.roundToLong()} m",
                 color = Color.Black,
+                overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 modifier = Modifier.weight(1f)
             )
