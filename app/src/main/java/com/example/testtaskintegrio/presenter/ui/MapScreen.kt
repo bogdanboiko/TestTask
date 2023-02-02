@@ -12,22 +12,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.testtaskintegrio.presenter.PlaceViewState
 import com.example.testtaskintegrio.presenter.event.PointEvent
 import com.example.testtaskintegrio.presenter.model.Point
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import kotlinx.coroutines.flow.Flow
 
 @SuppressLint("MissingPermission")
 @Composable
 fun MapScreen(
     sendEvent: (PointEvent) -> Unit,
-    myLocationState: State<LatLng>,
+    myLocationState: State<PlaceViewState>,
     pointList: Flow<PagingData<Point>>
 ) {
     Box(
@@ -39,17 +37,10 @@ fun MapScreen(
             position = CameraPosition.fromLatLngZoom(LatLng(44.810058, 20.4617586), 16f)
         }
 
-        cameraPositionState.position = CameraPosition.fromLatLngZoom(myLocationState.value, 16f)
+        cameraPositionState.position =
+            CameraPosition.fromLatLngZoom(myLocationState.value.userLocation, 16f)
 
-        GoogleMap(
-            cameraPositionState = cameraPositionState,
-            properties = MapProperties(isMyLocationEnabled = true),
-            uiSettings = MapUiSettings(
-                compassEnabled = false,
-                zoomControlsEnabled = false,
-                myLocationButtonEnabled = false
-            )
-        ) {}
+        ComposableMap(cameraPositionState = cameraPositionState)
 
         val updateMyCurrentLocation: (Location) -> Unit = {
             sendEvent(PointEvent.UpdateLocationEvent(it))
@@ -81,4 +72,17 @@ fun MapScreen(
             )
         }
     }
+}
+
+@Composable
+fun ComposableMap(cameraPositionState: CameraPositionState) {
+    GoogleMap(
+        cameraPositionState = cameraPositionState,
+        properties = MapProperties(isMyLocationEnabled = true),
+        uiSettings = MapUiSettings(
+            compassEnabled = false,
+            zoomControlsEnabled = false,
+            myLocationButtonEnabled = false
+        )
+    ) {}
 }

@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.example.testtaskintegrio.domain.model.PointDomain
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
@@ -20,38 +21,26 @@ class PointPagingSource(private val queryPointsByGeo: Query) :
 
             val lastVisibleProduct = currentPage.documents[currentPage.size() - 1]
 
-
             val nextPage = queryPointsByGeo.startAfter(lastVisibleProduct).limit(5).get().await()
 
-            val pointList = mutableListOf<PointDomain>()
-
-            currentPage.forEach { document ->
-                val id = document.id
-                val address = document.get("address") as String
-                val corpus = document.get("corpus") as Long
-                val geoHash = document.get("geoHash") as String
-                val coordinates = document.getGeoPoint("coordinates") as GeoPoint
-                val properties = document.get("properties") as Map<String, Long>
-
-                pointList.add(
-                    PointDomain(
-                        id,
-                        address,
-                        corpus,
-                        geoHash,
-                        coordinates,
-                        properties
-                    )
-                )
-            }
-
             LoadResult.Page(
-                data = pointList,
+                data = currentPage.map(::toDomain),
                 prevKey = null,
                 nextKey = nextPage
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
+    }
+
+    private fun toDomain(document: QueryDocumentSnapshot) = with(document) {
+        PointDomain(
+            id = id,
+            address = get("address") as String,
+            corpus = document.get("corpus") as Long,
+            geoHash = document.get("geoHash") as String,
+            coordinates = document.getGeoPoint("coordinates") as GeoPoint,
+            properties = document.get("properties") as Map<String, Long>
+        )
     }
 }

@@ -104,8 +104,11 @@ fun AddressDialog(
                                     corpusInput.value.text.toLong()
                                 }
 
-                                onSendPrintedLocation(addressInput.value, corpus)
-                                onDismissRequest()
+                                if (addressInput.value.isNotEmpty()) {
+                                    onSendPrintedLocation(addressInput.value, corpus)
+                                    onDismissRequest()
+                                }
+
                             },
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
